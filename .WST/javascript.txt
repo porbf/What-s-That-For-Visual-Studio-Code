@@ -1,0 +1,8 @@
+console.log([$1]);
+在控制台输出
+const
+声明一个常量
+let
+声明一个变量
+document.querySelector([$1]);
+按选择器查找元素

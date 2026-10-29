@@ -1,0 +1,4 @@
+.vscode/**
+.WST/**
+**/*.map
+.gitignore

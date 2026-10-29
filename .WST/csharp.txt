@@ -1,0 +1,10 @@
+Console.WriteLine([$1]);
+向控制台输出一行内容
+string
+字符串类型
+int
+32 位整数类型
+List<[$1]>
+泛型列表
+foreach (var [$1] in [$2])
+遍历集合中的每一项
