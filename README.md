@@ -8,6 +8,8 @@ What this extension does is simple:
 
 It reads a "code ↔ description" table from the `.WST` folder in your workspace root, and shows the descriptions next to **code completion candidates** and on the **right side of code lines**.
 
+![1793281066444](images/README/1793281066444.png)
+
 ## Features
 
 The sidebar (the "W" icon in the activity bar) contains a **WST Console**:
