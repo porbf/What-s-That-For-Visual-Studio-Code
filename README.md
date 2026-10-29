@@ -1,69 +1,78 @@
 # What's That (WST) For Visual Studio Code
 
-新手学习、写代码效率实在低下，为解决现状，WST插件横空出世！
+> [中文说明](README.zh-cn.md)
 
-本插件做的事情十分简单：
+Learning to code by hand is slow and inefficient. To solve this, the WST extension is here!
 
-读取工作区根目录下 `.WST` 文件夹里的“代码 ↔ 说明”对照表，把中文说明显示在 **代码补全候选项的右侧** 和 **代码行的右侧**。
+What this extension does is simple:
 
-## 功能
+It reads a "code ↔ description" table from the `.WST` folder in your workspace root, and shows the descriptions next to **code completion candidates** and on the **right side of code lines**.
 
-侧边栏（活动栏上的 W 图标）里有一个「WST 控制台」窗口：
+## Features
 
-- **刷新** 按钮 —— 重新扫描工作区根目录下的 `.WST` 文件夹。
-- **启用 WST** —— 总开关，关闭后下面两个功能都不生效。
-- **启用候选注释** —— 代码补全弹窗里，为命中的候选项在右侧显示说明文本。
-- **启用代码行注释** —— 在代码行右侧以内联装饰显示对应的说明文本。
+The sidebar (the "W" icon in the activity bar) contains a **WST Console**:
 
-点击刷新后：若工作区根目录下没有 `.WST` 文件夹，WST 无动作（控制台显示“未找到 .WST 文件夹”）；若有，则读取其中的 txt 文件。
+- **Refresh** button — re-scans the `.WST` folder in the workspace root.
+- **Enable WST** — master switch; when off, both features below are disabled.
+- **Enable candidate comments** — shows the description text to the right of matching completion candidates.
+- **Enable code line comments** — shows the description text to the right of matching code lines via inline decorations.
 
-## .WST 文件夹格式
+When you click **Refresh**: if there is no `.WST` folder in the workspace root, WST does nothing (the console shows "No .WST folder found"); otherwise it reads the `.txt` files inside it. All language files are loaded at once.
 
-在 **工作区根目录** 下创建 `.WST` 文件夹，里面放置 **以语言名为文件名** 的 txt 文件，例如 `css.txt`、`csharp.txt`、`javascript.txt`、`python.txt`。文件名（不含 `.txt`）应与 VSCode 的语言 ID 一致（注意是 `csharp`，不是 `cshap`）。
+## .WST folder format
 
-(可以前往本项目的.WST查看示例)
+Create a `.WST` folder in the **workspace root**. Put `.txt` files named by **language id** inside, for example `css.txt`, `csharp.txt`, `javascript.txt`, `python.txt`. The file name (without `.txt`) must match the VS Code language id (note: `csharp`, not `cshap`).
 
-每个 txt 文件：
+(You can check the `.WST` folder in this repo for examples.)
 
-- **单数行（1、3、5…）写代码**
-- **双数行（2、4、6…）写文本说明**
+In each `.txt` file:
 
-代码行支持几种形式：
+- **Odd lines (1, 3, 5, …) contain code**
+- **Even lines (2, 4, 6, …) contain the description text**
 
-1. 普通单词：`font-size`
-2. 带占位符：`font-size: [$1];`
-3. 多个占位符：`border-top: [$1] [$2] [$3]`
+Code lines support several forms:
 
-> **补全候选**只收录**无占位符**的普通单词条目（如 `font-size`）；带 `[$n]` 占位符的条目是整行模板，仅用于**代码行注释**，不会出现在候选项中。
+1. Plain word: `font-size`
+2. With one placeholder: `font-size: [$1];`
+3. With multiple placeholders: `border-top: [$1] [$2] [$3]`
 
-文本行里可以：
+> **Completion candidates** only include **plain word entries** (without `[$n]` placeholders). Entries with `[$n]` placeholders are full-line templates used only for **code line comments**; they never appear in the completion list.
 
-- 用 `[$1]`、`[$2]`… 引用代码行中对应占位符，做 **代码行注释** 时会被替换成实际值；
-- 用 `{solid:单直线,doble:双直线,...}` 这种 `键:说明` 列表作为取值说明（原样显示）。
+Text lines may:
 
-## 如何使用 / 运行
+- Use `[$1]`, `[$2]`, … to reference the corresponding placeholders in the code line; they are replaced with the actual matched values when rendering **code line comments**;
+- Use a `{key:description,...}` list such as `{solid:solid,doble:double,...}` as a value hint (shown as-is).
 
-1. 用 VSCode 打开本目录（`whats-that`）。
-2. 按 `F5`（或运行「运行 WST 扩展」配置），会打开一个扩展开发宿主窗口。
-3. 在那个窗口里打开一个含 `.WST` 文件夹的工作区，例如直接打开 `whats-that` 目录本身（它已内置示例 `.WST`）。
-4. 打开一个 `css` 文件，输入 `font-size` 触发补全即可看到右侧说明；输入 `border-top: 1px solid red` 可看到行尾的中文说明。
+## Usage
 
-## 配置
+1. Open this folder (`whats-that`) in VS Code.
+2. Press `F5` (or run the "Run WST Extension" configuration) to open an Extension Development Host window.
+3. In that window, open a workspace that contains a `.WST` folder (for example, open the `whats-that` folder itself, which ships a sample `.WST`).
+4. Open a `css` file, type `font-size` and trigger completion to see the description on the right; type `border-top: 1px solid red` to see the description at the end of the line.
 
-在 `设置 → 扩展 → What's That (WST)` 中，或在侧边栏勾选：
+## Configuration
 
-- `wst.enabled`：总开关
-- `wst.enableCandidateComments`：候选注释
-- `wst.enableLineComments`：代码行注释
+In `Settings → Extensions → What's That (WST)`, or via the sidebar checkboxes:
 
-## 实现说明
+- `wst.enabled`: master switch
+- `wst.enableCandidateComments`: candidate comments
+- `wst.enableLineComments`: code line comments
 
-- **候选注释**：WST 自己注册了一个补全提供器，只把 `.WST` 文件中**无占位符**的普通单词条目作为补全候选项给出，`detail`（候选项右侧）显示对应的文本说明；带 `[$n]` 的整行模板条目不参与补全。VSCode 的公开 API 无法修改其他扩展返回的候选项，因此“给已有候选项加注释”是通过 WST 自己提供这些候选项来实现的。
-- **代码行注释**：通过 `createTextEditorDecorationType` 的 `after` 内联装饰，把匹配到的说明显示在行尾。
+## Localization
 
+The extension UI supports **English** (default) and **Simplified Chinese** (`zh-cn`), following the VS Code display language.
 
-## 脚注
+## Implementation notes
 
-脚本量小，我直接用DeepSeek Harness完成，如果没有特殊需求，我应该不会更新这个插件
+- **Candidate comments**: WST registers its own completion provider and only offers the **plain word entries** from `.WST` as completion candidates, with `detail` (the right side of the candidate) showing the description. The VS Code public API cannot modify candidates returned by other extensions, so "annotating existing candidates" is implemented by WST providing these candidates itself.
+- **Code line comments**: implemented with `createTextEditorDecorationType` `after` inline decorations, showing the matched description at the end of the line.
 
-如果有需求，或者有bug，欢迎上报，或者创建一个复刻，完成你的项目！
+## Footnote
+
+The codebase is small and was built with DeepSeek Harness. Unless there is a specific need, I probably won't update this extension.
+
+If you have feature requests or find bugs, please report them, or fork this project and build This own!
+
+## License
+
+[Apache License 2.0](LICENSE)

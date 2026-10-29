@@ -1,10 +1,14 @@
 {
   "name": "whats-that",
-  "displayName": "What's That (WST)",
-  "description": "为代码补全候选项与代码行添加来自 .WST 文件夹的中文说明注释。",
+  "displayName": "%displayName%",
+  "description": "%description%",
   "version": "0.1.0",
   "publisher": "wst",
-  "license": "MIT",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/porbf/What-s-That-For-Visual-Studio-Code"
+  },
   "engines": {
     "vscode": "^1.75.0"
   },
@@ -13,10 +17,11 @@
     "Other"
   ],
   "keywords": [
-    "注释",
-    "补全",
+    "comment",
+    "annotation",
     "snippet",
-    "comment"
+    "documentation",
+    "注释"
   ],
   "activationEvents": [
     "onStartupFinished"
@@ -27,7 +32,7 @@
       "activitybar": [
         {
           "id": "wst",
-          "title": "What's That",
+          "title": "%views.wst.title%",
           "icon": "media/icon.svg"
         }
       ]
@@ -37,37 +42,37 @@
         {
           "type": "webview",
           "id": "wst.sidebar",
-          "name": "WST 控制台"
+          "name": "%views.wst.sidebar.name%"
         }
       ]
     },
     "commands": [
       {
         "command": "wst.refresh",
-        "title": "WST: 刷新 .WST 数据"
+        "title": "%command.wst.refresh%"
       },
       {
         "command": "wst.toggleEnabled",
-        "title": "WST: 启用 / 停用"
+        "title": "%command.wst.toggleEnabled%"
       }
     ],
     "configuration": {
-      "title": "What's That (WST)",
+      "title": "%config.title%",
       "properties": {
         "wst.enabled": {
           "type": "boolean",
           "default": true,
-          "description": "总开关：是否启用 WST。"
+          "description": "%config.wst.enabled%"
         },
         "wst.enableCandidateComments": {
           "type": "boolean",
           "default": true,
-          "description": "启用候选注释：在补全候选项右侧显示 .WST 中的文本注释。"
+          "description": "%config.wst.enableCandidateComments%"
         },
         "wst.enableLineComments": {
           "type": "boolean",
           "default": true,
-          "description": "启用代码行注释：在代码行右侧显示 .WST 中的文本注释。"
+          "description": "%config.wst.enableLineComments%"
         }
       }
     }

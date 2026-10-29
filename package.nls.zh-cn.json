@@ -1,0 +1,12 @@
+{
+  "displayName": "What's That (WST)",
+  "description": "把来自 .WST 文件夹的说明注释显示在代码补全候选项与代码行右侧。",
+  "views.wst.title": "What's That",
+  "views.wst.sidebar.name": "WST 控制台",
+  "command.wst.refresh": "WST: 刷新 .WST 数据",
+  "command.wst.toggleEnabled": "WST: 启用 / 停用",
+  "config.title": "What's That (WST)",
+  "config.wst.enabled": "总开关：是否启用 WST 全部功能。",
+  "config.wst.enableCandidateComments": "启用候选注释：在补全候选项右侧显示 .WST 中的文本注释。",
+  "config.wst.enableLineComments": "启用代码行注释：在代码行右侧显示 .WST 中的文本注释。"
+}

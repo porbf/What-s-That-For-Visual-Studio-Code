@@ -1,0 +1,12 @@
+{
+  "displayName": "What's That (WST)",
+  "description": "Shows annotations from a .WST folder on code completions and code lines.",
+  "views.wst.title": "What's That",
+  "views.wst.sidebar.name": "WST Console",
+  "command.wst.refresh": "WST: Refresh .WST data",
+  "command.wst.toggleEnabled": "WST: Enable / Disable",
+  "config.title": "What's That (WST)",
+  "config.wst.enabled": "Master switch: enable or disable all WST features.",
+  "config.wst.enableCandidateComments": "Enable candidate comments: show the text from .WST to the right of completion candidates.",
+  "config.wst.enableLineComments": "Enable code line comments: show the text from .WST to the right of code lines."
+}

@@ -2,6 +2,25 @@
 
 const vscode = require('vscode');
 
+function isZh(lang) {
+  return !!lang && lang.toLowerCase().startsWith('zh');
+}
+
+function strings(lang) {
+  const zh = isZh(lang);
+  return {
+    refresh: zh ? '刷新' : 'Refresh',
+    enableWst: zh ? '启用 WST' : 'Enable WST',
+    enableCandidate: zh ? '启用候选注释' : 'Enable candidate comments',
+    enableLine: zh ? '启用代码行注释' : 'Enable code line comments',
+    loading: zh ? '正在加载…' : 'Loading…',
+    loaded: (n, langs) => zh
+      ? '已加载 ' + n + ' 条注释 · 语言：' + (langs.join('、') || '无')
+      : 'Loaded ' + n + ' annotation(s) · Languages: ' + (langs.join(', ') || 'none'),
+    noFolder: zh ? '未找到 .WST 文件夹' : 'No .WST folder found',
+  };
+}
+
 class WstSidebarProvider {
   constructor(store) {
     this.store = store;
@@ -19,14 +38,15 @@ class WstSidebarProvider {
   updateView() {
     if (!this.view) return;
     const cfg = vscode.workspace.getConfiguration('wst');
+    const s = strings(vscode.env.language);
     this.view.webview.postMessage({
       type: 'state',
       enabled: cfg.get('enabled', true),
       candidate: cfg.get('enableCandidateComments', true),
       line: cfg.get('enableLineComments', true),
-      count: this.store.count(),
-      languages: this.store.languages(),
-      hasFolder: this.store.foundFolder,
+      statusText: this.store.foundFolder
+        ? s.loaded(this.store.count(), this.store.languages())
+        : s.noFolder,
     });
   }
 
@@ -44,8 +64,10 @@ class WstSidebarProvider {
   }
 
   getHtml() {
+    const s = strings(vscode.env.language);
+    const htmlLang = isZh(vscode.env.language) ? 'zh-CN' : 'en';
     return `<!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="${htmlLang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -62,11 +84,11 @@ class WstSidebarProvider {
 </head>
 <body>
   <h2>What's That (WST)</h2>
-  <button id="refresh">刷新</button>
-  <label><input type="checkbox" id="enabled"> 启用 WST</label>
-  <label><input type="checkbox" id="candidate"> 启用候选注释</label>
-  <label><input type="checkbox" id="line"> 启用代码行注释</label>
-  <div class="status" id="status">正在加载…</div>
+  <button id="refresh">${s.refresh}</button>
+  <label><input type="checkbox" id="enabled"> ${s.enableWst}</label>
+  <label><input type="checkbox" id="candidate"> ${s.enableCandidate}</label>
+  <label><input type="checkbox" id="line"> ${s.enableLine}</label>
+  <div class="status" id="status">${s.loading}</div>
   <script>
     const vscode = acquireVsCodeApi();
     const $ = id => document.getElementById(id);
@@ -83,9 +105,7 @@ class WstSidebarProvider {
       $('line').checked = !!m.line;
       $('candidate').disabled = !m.enabled;
       $('line').disabled = !m.enabled;
-      $('status').textContent = m.hasFolder
-        ? '已加载 ' + m.count + ' 条注释 · 语言：' + (m.languages.join('、') || '无')
-        : '未找到 .WST 文件夹';
+      $('status').textContent = m.statusText;
     });
   </script>
 </body>
